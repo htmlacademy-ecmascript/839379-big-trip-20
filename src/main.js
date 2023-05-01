@@ -1,17 +1,36 @@
-import {render, RenderPosition} from './render.js';
-import FiltersView from './view/filters-view.js';
-import TripInfoView from './view/trip-info-view.js';
-import Presenter from './presenter/presenter.js';
+import './views/brief-view.js';
+import './views/add-view.js';
+import './views/filter-view.js';
+import './views/sort-view.js';
+import './views/list-view.js';
 
+/**
+ * @type {BriefView}
+ */
+const briefView = document.querySelector('brief-view');
 
-const tripMainElement = document.querySelector('.trip-main');
-const tripFiltersElement = tripMainElement.querySelector('.trip-controls__filters');
-const tripEventsElement = document.querySelector('.trip-events');
+/**
+ * @type {AddView}
+ */
+const addView = document.querySelector('add-view');
 
-const presenter = new Presenter({boardContainer: tripEventsElement});
+/**
+ * @type {FilterView}
+ */
+const filterView = document.querySelector('filter-view');
 
-render (new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
-render(new FiltersView(), tripFiltersElement);
+/**
+ * @type {SortView}
+ */
+const sortView = document.querySelector('sort-view');
 
+/**
+ * @type {ListView}
+ */
+const listView = document.querySelector('list-view');
 
-presenter.init();
+briefView.render();
+addView.render();
+filterView.render();
+sortView.render();
+listView.render();
