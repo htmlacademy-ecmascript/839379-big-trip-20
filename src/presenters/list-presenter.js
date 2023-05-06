@@ -12,7 +12,6 @@ class ListPresenter extends Presenter {
   createViewState() {
     const points = this.model.getPoints();
     const items = points.map(this.createPointViewState, this);
-    console.log(items);
     return {items};
   }
 
