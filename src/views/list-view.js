@@ -7,7 +7,6 @@ import EditorView from './editor-view.js';
  * @extends {View<ListViewState>}
  */
 class ListView extends View {
-
   constructor() {
     super();
 
