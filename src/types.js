@@ -15,6 +15,7 @@
  * @typedef {import('./views/list-view.js').default} ListView
  * @typedef {import('./views/card-view.js').default} CardView
  * @typedef {import('./views/editor-view.js').default} EditorView
+ * @typedef {import('./views/placeholder-view.js').default} PlaceholderView
  */
 
 /**
@@ -85,9 +86,16 @@
  */
 
 /**
+ * @typedef PlaceholderViewState
+ * @prop {string} text
+ * @prop {boolean} isHidden
+ */
+
+/**
  * @typedef UrlParams
  * @prop {string} [edit]
  * @prop {SortType} [sort]
+ * @prop {FilterType} [filter]
  */
 
 /**
