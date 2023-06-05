@@ -20,13 +20,53 @@ class AppModel extends Model {
   };
 
   /**
-   * @param {{sort?: SortType}} [criteria]
+   * @type {Record<FilterType, (it: Point) => boolean>}
+   */
+  #filterCallbackMap = {
+    everything: () => true,
+    future: (it) => Date.parse(it.startDateTime) > Date.now(),
+    present: (it) => !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
+    past: (it) => Date.parse(it.endDateTime) < Date.now(),
+  };
+
+
+  /**
+   * @param {{sort?: SortType, filter?: FilterType}} [criteria]
    * @return {Array<Point>}
    */
   getPoints(criteria = {}) {
     const adaptedPoints = this.#points.map(AppModel.adaptPointForClient);
     const sortCallback = this.#sortCallbackMap[criteria.sort] ?? this.#sortCallbackMap.day;
-    return adaptedPoints.sort(sortCallback);
+    const filterCallback = this.#filterCallbackMap[criteria.filter] ?? this.#filterCallbackMap.everything;
+    return adaptedPoints.filter(filterCallback).sort(sortCallback);
+  }
+
+  /**
+   * @param {Point} point
+   */
+  updatePoint(point) {
+    const adaptedPoint = AppModel.adaptPointForServer(point);
+    const index = this.#points.findIndex((it) => it.id === adaptedPoint.id);
+
+    this.#points.splice(index, 1, adaptedPoint);
+  }
+
+  /**
+   * @param {Point} point
+   */
+  addPoint(point) {
+    const adaptedPoint = AppModel.adaptPointForServer(point);
+    adaptedPoint.id = crypto.randomUUID();
+    this.#points.push(adaptedPoint);
+  }
+
+  /**
+   * @param {string} id
+   */
+  deletePoint(id) {
+    const index = this.#points.findIndex((it) => it.id === id);
+
+    this.#points.splice(index, 1);
   }
 
   /**
@@ -66,6 +106,23 @@ class AppModel extends Model {
       basePrice: point.base_price,
       offerIds: point.offers,
       isFavorite: point.is_favorite
+    };
+  }
+
+  /**
+   * @param {Point} point
+   * @return {PointInSnakeCase}
+   */
+  static adaptPointForServer(point) {
+    return {
+      'id': point.id,
+      'type': point.type,
+      'destination': point.destinationId,
+      'date_from': point.startDateTime,
+      'date_to': point.endDateTime,
+      'base_price': point.basePrice,
+      'offers': point.offerIds,
+      'is_favorite': point.isFavorite
     };
   }
 }
