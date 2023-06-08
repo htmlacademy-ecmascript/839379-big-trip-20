@@ -19,6 +19,18 @@
  */
 
 /**
+ * @typedef {import('./services/service.js').default} Service
+ * @typedef {import('./services/api-service.js').default} ApiService
+ */
+
+/**
+ * @typedef ServiceOptions
+ * @prop {string} baseUrl
+ * @prop {number} minResponseTime
+ * @prop {string} authorization
+ */
+
+/**
  * @typedef BriefViewState
  * @prop {string} places
  * @prop {string} dates
@@ -89,7 +101,7 @@
 /**
  * @typedef PlaceholderViewState
  * @prop {string} text
- * @prop {boolean} isHidden
+ * @prop {boolean} [isHidden]
  */
 
 /**
