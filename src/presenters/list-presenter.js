@@ -26,6 +26,7 @@ class ListPresenter extends Presenter {
         offerIds: [],
         isFavorite: false
       };
+
       items.unshift(this.createPointViewState(draftPoint));
     }
 
@@ -124,6 +125,7 @@ class ListPresenter extends Presenter {
      * @type {UrlParams}
      */
     const urlParams = this.getUrlParams();
+
     delete urlParams.edit;
     this.setUrlParams(urlParams);
   }
@@ -131,13 +133,18 @@ class ListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: CardView}} event
    */
-  handleViewFavorite(event) {
+  async handleViewFavorite(event) {
     const card = event.target;
     const point = card.state;
 
-    point.isFavorite = !point.isFavorite;
-    this.model.updatePoint(this.serializePointViewState(point));
-    card.render();
+    try{
+      point.isFavorite = !point.isFavorite;
+      await this.model.updatePoint(this.serializePointViewState(point));
+      card.render();
+
+    } catch(error) {
+      card.shake();
+    }
   }
 
   /**
@@ -189,31 +196,50 @@ class ListPresenter extends Presenter {
   }
 
   /**
-   * @param {CustomEvent & {target: CardView}} event
+   * @param {CustomEvent & {target: EditorView}} event
    */
-  handleViewSave(event) {
+  async handleViewSave(event) {
     const editor = event.target;
     const point = editor.state;
 
-    event.preventDefault();
-    if(point.isDraft) {
-      this.model.addPoint(this.serializePointViewState(point));
-    } else {
-      this.model.updatePoint(this.serializePointViewState(point));
+    try{
+      event.preventDefault();
+      point.isSaving = true;
+      editor.renderSubmitButton();
+
+      if(point.isDraft) {
+        await this.model.addPoint(this.serializePointViewState(point));
+      } else {
+        await this.model.updatePoint(this.serializePointViewState(point));
+      }
+      this.handleViewClose();
+
+    } catch(error) {
+      point.isSaving = false;
+      editor.renderSubmitButton();
+      editor.shake();
     }
-    this.handleViewClose();
   }
 
   /**
-   * @param {CustomEvent & {target: CardView}} event
+   * @param {CustomEvent & {target: EditorView}} event
    */
-  handleViewDelete(event) {
+  async handleViewDelete(event) {
     const editor = event.target;
     const point = editor.state;
 
-    event.preventDefault();
-    this.model.deletePoint(point.id);
-    this.handleViewClose();
+    try{
+      event.preventDefault();
+      point.isDeleting = true;
+      editor.renderResetButton();
+      await this.model.deletePoint(point.id);
+      this.handleViewClose();
+
+    } catch(error) {
+      point.isDeleting = false;
+      editor.renderResetButton();
+      editor.shake();
+    }
   }
 }
 
