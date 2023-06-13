@@ -7,7 +7,6 @@ import {html, createDatePickers} from '../utils.js';
  * @implements {EventListenerObject}
  */
 class EditorView extends View {
-
   /**
    * @type {ReturnType<createDatePickers>}
    */

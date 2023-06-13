@@ -23,9 +23,11 @@ function formatDate(dateTime, narrow) {
 function formatDateRange(startDateTime, endDateTime) {
   const start = dayjs(startDateTime);
   const end = dayjs(endDateTime);
+
   if(start.isSame(end, 'day')) {
     return formatDate(start);
   }
+
   return [
     formatDate(start),
     formatDate(end, start.isSame(end, 'month'))

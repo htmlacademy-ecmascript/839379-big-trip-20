@@ -36,8 +36,8 @@ class FilterPresenter extends Presenter {
   }
 
   /**
- * @param {Event & {target: {value: FilterType}}} event
- */
+   * @param {Event & {target: {value: FilterType}}} event
+   */
   handleViewChange(event) {
     const urlParams = {
       filter: event.target.value

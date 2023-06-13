@@ -10,7 +10,6 @@ class BriefPresenter extends Presenter {
    * @return {BriefViewState}
    */
   createViewState() {
-    // TODO: Создать динамически
     return {
       places: this.getPlaces(),
       dates: this.getDates(),
@@ -34,6 +33,7 @@ class BriefPresenter extends Presenter {
     if(names.length > 3) {
       names.splice(1, names.length - 2, '...');
     }
+
     return names.join(' — ');
   }
 
@@ -49,12 +49,13 @@ class BriefPresenter extends Presenter {
 
       return formatDateRange(startDate, endDate);
     }
+
     return '';
   }
 
-  // /**
-  //  * @return {number}
-  //  */
+  /**
+   * @return {number}
+   */
   getCost() {
     const points = this.model.getPoints();
     const offerGroups = this.model.getOfferGroups();
@@ -77,11 +78,6 @@ class BriefPresenter extends Presenter {
   /**
    * @override
    */
-  handleWindowPopState() {}
-
-  /**
-   * @override
-   */
   addEventListeners() {
     this.model.addEventListener('change', this.handleModelChange.bind(this));
   }
@@ -89,6 +85,11 @@ class BriefPresenter extends Presenter {
   handleModelChange() {
     this.updateView();
   }
+
+  /**
+   * @override
+   */
+  handleWindowPopState() {}
 }
 
 export default BriefPresenter;
