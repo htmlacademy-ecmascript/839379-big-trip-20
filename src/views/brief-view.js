@@ -17,7 +17,8 @@ class BriefView extends View {
   createHtml() {
     const trip = this.state;
 
-    return html`
+    if(trip.places) {
+      return html`
       <div class="trip-info__main">
         <h1 class="trip-info__title">${trip.places}</h1>
 
@@ -28,6 +29,9 @@ class BriefView extends View {
         Total: €&nbsp;<span class="trip-info__cost-value">${trip.cost}</span>
       </p>
     `;
+    }
+
+    return '';
   }
 }
 
