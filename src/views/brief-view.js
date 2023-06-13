@@ -21,7 +21,6 @@ class BriefView extends View {
       return html`
       <div class="trip-info__main">
         <h1 class="trip-info__title">${trip.places}</h1>
-
         <p class="trip-info__dates">${trip.dates}</p>
       </div>
 

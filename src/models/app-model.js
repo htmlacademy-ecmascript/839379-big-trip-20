@@ -22,7 +22,7 @@ class AppModel extends Model {
     day: (a, b) => Date.parse(a.startDateTime) - Date.parse(b.endDateTime),
     event: () => 0,
     time: (a, b) => AppModel.calcPointDuration(b) - AppModel.calcPointDuration(a),
-    price: (a, b) => a.basePrice - b.basePrice,
+    price: (a, b) => b.basePrice - a.basePrice,
     offers: () => 0,
   };
 
@@ -124,6 +124,7 @@ class AppModel extends Model {
   async deletePoint(id) {
     try{
       this.notify('busy');
+
       await this.#apiService.deletePoint(id);
       const index = this.#points.findIndex((it) => it.id === id);
 

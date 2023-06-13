@@ -36,16 +36,19 @@ class PlaceholderPresenter extends Presenter {
        */
       const urlParams = this.getUrlParams();
       const points = this.model.getPoints(urlParams);
+
       return {
         text: this.textMap[urlParams.filter] ?? this.textMap.everything,
         isHidden: points.length > 0 || urlParams.edit === 'draft'
       };
     }
+
     if(this.modelError) {
       return {
         text: String(this.modelError)
       };
     }
+
     return {
       text: 'Loading...'
     };

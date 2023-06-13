@@ -160,7 +160,6 @@ class CardView extends View {
       </button>
     `;
   }
-
 }
 
 customElements.define('card-view', CardView);

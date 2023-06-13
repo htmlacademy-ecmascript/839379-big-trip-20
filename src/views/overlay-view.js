@@ -1,5 +1,4 @@
 import './overlay-view.css';
-
 import View from './view.js';
 
 /**
