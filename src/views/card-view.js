@@ -8,18 +8,7 @@ class CardView extends View {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick);
-  }
-
-  /**
-   * @param {MouseEvent & {target: Element}} event
-   */
-  handleClick(event){
-    if(event.target.closest('.event__rollup-btn')) {
-      this.notify('open');
-    } else if (event.target.closest('.event__favorite-btn')) {
-      this.notify('favorite');
-    }
+    this.addEventListener('click', this.cardClickHandler);
   }
 
   /**
@@ -159,6 +148,17 @@ class CardView extends View {
         <span class="visually-hidden">Open event</span>
       </button>
     `;
+  }
+
+  /**
+   * @param {MouseEvent & {target: Element}} event
+   */
+  cardClickHandler(event){
+    if(event.target.closest('.event__rollup-btn')) {
+      this.notify('open');
+    } else if (event.target.closest('.event__favorite-btn')) {
+      this.notify('favorite');
+    }
   }
 }
 

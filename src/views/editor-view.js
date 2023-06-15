@@ -14,76 +14,10 @@ class EditorView extends View {
 
   constructor() {
     super();
-    this.addEventListener('click', this.handleClick);
-    this.addEventListener('input', this.handleInput);
-    this.addEventListener('submit', this.handleSubmit);
-    this.addEventListener('reset', this.handleReset);
-  }
-
-  connectedCallback() {
-    /**
-     * @type {NodeListOf<HTMLInputElement>}
-     */
-    const dateFields = this.querySelectorAll('.event__input--time');
-    const [startDateField, endDateField] = dateFields;
-
-    this.#destroyDatePickers = createDatePickers(startDateField,endDateField);
-
-    document.addEventListener('keydown', this);
-  }
-
-  disconnectedCallback() {
-    this.#destroyDatePickers();
-
-    document.removeEventListener('keydown', this);
-  }
-
-  /**
-   * @param {MouseEvent & {target: Element}} event
-   */
-  handleClick(event){
-    if(event.target.closest('.event__rollup-btn')) {
-      this.notify('close');
-    }
-  }
-
-  /**
-   * @param {KeyboardEvent} event
-   */
-  handleEvent(event) {
-    if(event.key === 'Escape') {
-      this.notify('close');
-    }
-  }
-
-  /**
-   * @param {InputEvent} event
-   */
-  handleInput(event) {
-    this.notify('edit', event.target);
-  }
-
-  /**
-   * @param {SubmitEvent} event
-   */
-  handleSubmit(event) {
-    const actByDefault = this.notify('save');
-
-    if(!actByDefault){
-      event.preventDefault();
-    }
-  }
-
-  /**
-   * @param {Event} event
-   */
-  handleReset(event) {
-    const point = this.state;
-    const actByDefault = this.notify(point.isDraft ? 'close' : 'delete');
-
-    if(!actByDefault){
-      event.preventDefault();
-    }
+    this.addEventListener('click', this.editorClickHandler);
+    this.addEventListener('input', this.editorInputHandler);
+    this.addEventListener('submit', this.editorSubmitHandler);
+    this.addEventListener('reset', this.editorResetHandler);
   }
 
   /**
@@ -107,6 +41,24 @@ class EditorView extends View {
         </section>
       </form>
     `;
+  }
+
+  connectedCallback() {
+    /**
+     * @type {NodeListOf<HTMLInputElement>}
+     */
+    const dateFields = this.querySelectorAll('.event__input--time');
+    const [startDateField, endDateField] = dateFields;
+
+    this.#destroyDatePickers = createDatePickers(startDateField,endDateField);
+
+    document.addEventListener('keydown', this);
+  }
+
+  disconnectedCallback() {
+    this.#destroyDatePickers();
+
+    document.removeEventListener('keydown', this);
   }
 
   /**
@@ -304,6 +256,53 @@ class EditorView extends View {
     this.render('.event__reset-btn', this.createResetButtonHtml());
   }
 
+  /**
+   * @param {KeyboardEvent} event
+   */
+  handleEvent(event) {
+    if(event.key === 'Escape') {
+      this.notify('close');
+    }
+  }
+
+  /**
+   * @param {MouseEvent & {target: Element}} event
+   */
+  editorClickHandler(event){
+    if(event.target.closest('.event__rollup-btn')) {
+      this.notify('close');
+    }
+  }
+
+  /**
+   * @param {InputEvent} event
+   */
+  editorInputHandler(event) {
+    this.notify('edit', event.target);
+  }
+
+  /**
+   * @param {SubmitEvent} event
+   */
+  editorSubmitHandler(event) {
+    const actByDefault = this.notify('save');
+
+    if(!actByDefault){
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * @param {Event} event
+   */
+  editorResetHandler(event) {
+    const point = this.state;
+    const actByDefault = this.notify(point.isDraft ? 'close' : 'delete');
+
+    if(!actByDefault){
+      event.preventDefault();
+    }
+  }
 }
 
 customElements.define('editor-view', EditorView);
