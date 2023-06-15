@@ -16,6 +16,15 @@ class AppModel extends Model {
   #offerGroups;
 
   /**
+   * @param {ApiService} apiService
+   */
+  constructor(apiService) {
+    super();
+
+    this.#apiService = apiService;
+  }
+
+  /**
    * @type {Record<SortType, (a: Point, b: Point) => number>}
    */
   #sortCallbackMap = {
@@ -35,15 +44,6 @@ class AppModel extends Model {
     present: (it) => !this.#filterCallbackMap.past(it) && !this.#filterCallbackMap.future(it),
     past: (it) => Date.parse(it.endDateTime) < Date.now(),
   };
-
-  /**
-   * @param {ApiService} apiService
-   */
-  constructor(apiService) {
-    super();
-
-    this.#apiService = apiService;
-  }
 
   /**
    * @return {Promise<void>}

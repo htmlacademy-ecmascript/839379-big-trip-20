@@ -13,13 +13,6 @@ class OverlayView extends View {
   }
 
   /**
-   * @param {KeyboardEvent} event
-   */
-  handleEvent(event) {
-    event.preventDefault();
-  }
-
-  /**
    * @override
    */
   render() {
@@ -32,6 +25,13 @@ class OverlayView extends View {
       this.classList.remove('overlay--active');
       document.removeEventListener('keydown', this);
     }
+  }
+
+  /**
+ * @param {KeyboardEvent} event
+ */
+  handleEvent(event) {
+    event.preventDefault();
   }
 }
 
